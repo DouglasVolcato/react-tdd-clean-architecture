@@ -1,7 +1,7 @@
 import { validate } from "email-validator";
-import { EmailValidatorInterface } from "../../validation/protocols";
+import { EmailValidationInterface } from "../../validation/protocols";
 
-export class EmailValidatorAdapter implements EmailValidatorInterface {
+export class EmailValidatorAdapter implements EmailValidationInterface {
   public isEmail(value: string): boolean {
     return validate(value);
   }

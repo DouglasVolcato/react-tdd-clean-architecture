@@ -1,1 +1,1 @@
-export * from "./validators/email-validator-interface";
+export * from "./validators/email-validation-interface";
