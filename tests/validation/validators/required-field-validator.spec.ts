@@ -1,5 +1,5 @@
-import { RequiredFieldValidator } from "../../../../src/validation/validators";
-import { RequiredFieldError } from "../../../../src/validation/errors";
+import { RequiredFieldValidator } from "../../../src/validation/validators";
+import { RequiredFieldError } from "../../../src/validation/errors";
 
 type SutTypes = {
   sut: RequiredFieldValidator;

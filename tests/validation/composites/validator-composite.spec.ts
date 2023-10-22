@@ -1,5 +1,5 @@
-import { ValidatorComposite } from "../../../../src/validation/composites";
-import { ValidatorInterface } from "../../../../src/presentation/protocols";
+import { ValidatorComposite } from "../../../src/validation/composites";
+import { ValidatorInterface } from "../../../src/presentation/protocols";
 
 class ValidatorStub implements ValidatorInterface {
   public validate(data: any): Error | undefined {

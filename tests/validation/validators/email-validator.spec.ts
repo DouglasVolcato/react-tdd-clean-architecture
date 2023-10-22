@@ -1,9 +1,9 @@
-import { EmailValidationInterface } from "../../../../src/validation/protocols";
-import { EmailValidator } from "../../../../src/validation/validators";
+import { EmailValidationInterface } from "../../../src/validation/protocols";
+import { EmailValidator } from "../../../src/validation/validators";
 import {
   InvalidFieldError,
   RequiredFieldError,
-} from "../../../../src/validation/errors";
+} from "../../../src/validation/errors";
 
 class EmailValidationStub implements EmailValidationInterface {
   public isEmail(value: string): boolean {

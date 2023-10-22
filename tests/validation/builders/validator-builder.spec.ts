@@ -1,5 +1,8 @@
-import { ValidatorBuilder } from "../../../../src/validation/builders";
-import { EmailValidator, RequiredFieldValidator } from "../../../../src/validation/validators";
+import { ValidatorBuilder } from "../../../src/validation/builders";
+import {
+  EmailValidator,
+  RequiredFieldValidator,
+} from "../../../src/validation/validators";
 
 type SutTypes = {
   sut: ValidatorBuilder;
