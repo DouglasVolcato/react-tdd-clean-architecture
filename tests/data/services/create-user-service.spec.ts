@@ -1,25 +1,10 @@
 import { ClientPostRequestSenderInterface } from "../../../src/data/contracts";
-import { CreateUserUseCase } from "../../../src/domain/protocols";
 import { CreateUserService } from "../../../src/data/services";
-
-export const makeUserDto = (): CreateUserUseCase.Input => ({
-  name: "any_name",
-  email: "any_email@email.com",
-  password: "any_password",
-});
-
-export const makeUserEntity = (): CreateUserUseCase.Output => ({
-  id: "any_id",
-  name: "any_name",
-  email: "any_email@email.com",
-  password: "any_password",
-});
-
-class ClientPostRequestSenderStub implements ClientPostRequestSenderInterface {
-  public post(url: string, data: any): Promise<any> {
-    return Promise.resolve(makeUserEntity());
-  }
-}
+import {
+  makeUserEntity,
+  makeUserDto,
+  ClientPostRequestSenderStub,
+} from "../../test-utils";
 
 type SutTypes = {
   sut: CreateUserService;

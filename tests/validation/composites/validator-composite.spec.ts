@@ -1,11 +1,6 @@
 import { ValidatorComposite } from "../../../src/validation/composites";
 import { ValidatorInterface } from "../../../src/presentation/protocols";
-
-class ValidatorStub implements ValidatorInterface {
-  public validate(data: any): Error | undefined {
-    return;
-  }
-}
+import { ValidatorStub } from "../../test-utils";
 
 type SutTypes = {
   sut: ValidatorComposite;

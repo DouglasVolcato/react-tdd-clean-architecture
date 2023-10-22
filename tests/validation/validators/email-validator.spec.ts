@@ -4,12 +4,7 @@ import {
   InvalidFieldError,
   RequiredFieldError,
 } from "../../../src/validation/errors";
-
-class EmailValidationStub implements EmailValidationInterface {
-  public isEmail(value: string): boolean {
-    return true;
-  }
-}
+import { EmailValidationStub } from "../../test-utils";
 
 type SutTypes = {
   sut: EmailValidator;
