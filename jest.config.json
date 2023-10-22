@@ -1,6 +1,6 @@
 {
   "roots": ["<rootDir>/tests"],
-  "collectCoverageFrom": ["<rootDir>/src/**/*.{ts/tsx}"],
+  "collectCoverageFrom": ["<rootDir>/src/**/*"],
   "coverageDirectory": "coverage",
   "testEnvironment": "node",
   "transform": {

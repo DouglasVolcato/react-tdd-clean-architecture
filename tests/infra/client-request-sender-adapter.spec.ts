@@ -37,7 +37,9 @@ describe("ClientRequestSenderAdapter", () => {
     expect(axios.post).toHaveBeenCalledTimes(1);
     expect(axiosPostCalls[0][0]).toBe(urlLink);
     expect(axiosPostCalls[0][1]).toBe(bodyData);
-    expect(axiosPostCalls[0][2]?.validateStatus).toEqual(expect.any(Function));
+    expect(axiosPostCalls[0][2]).toEqual({
+      validateStatus: expect.any(Function),
+    });
   });
 
   test("Should return the correct data from axios post", async () => {
