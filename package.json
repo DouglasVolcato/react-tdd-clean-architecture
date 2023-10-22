@@ -9,6 +9,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "jest --passWithNoTests",
+    "test-watch": "jest --passWithNoTests --watch",
     "test-coverage": "jest --passWithNoTests --coverage"
   },
   "dependencies": {
