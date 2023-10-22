@@ -2,16 +2,15 @@ import { ClientRequestSenderAdapter } from "../../src/infra/adapters/client-requ
 import { ClientPostRequestSenderInterface } from "../../src/data/contracts";
 import axios from "axios";
 
+const urlLink = "any_url";
+const bodyData = {
+  value: "any_value",
+};
 const apiResponse = {
   statusCode: 200,
   data: {
     value: "any_value",
   },
-};
-
-const urlLink = "any_url";
-const bodyData = {
-  value: "any_value",
 };
 
 jest.mock("axios", () => ({
