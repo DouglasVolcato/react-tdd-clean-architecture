@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="NI4gVl3g9qLXOJn4oS7B" name="Page-1">
-        <mxGraphModel dx="1547" dy="2020" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="1">
+        <mxGraphModel dx="977" dy="1681" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="1">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -93,7 +93,7 @@
                     <mxGeometry x="424.38" y="-115" width="221.25" height="70" as="geometry"/>
                 </mxCell>
                 <mxCell id="45" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#06381A;" parent="1" vertex="1">
-                    <mxGeometry x="1010" y="10" width="610" height="420" as="geometry"/>
+                    <mxGeometry x="1010" y="10" width="340" height="420" as="geometry"/>
                 </mxCell>
                 <mxCell id="46" value="VALIDATION" style="text;strokeColor=none;fillColor=none;html=1;fontSize=15;fontStyle=1;verticalAlign=middle;align=left;" parent="1" vertex="1">
                     <mxGeometry x="1010" y="10" width="60" height="25" as="geometry"/>
@@ -102,9 +102,6 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="72" style="edgeStyle=none;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;strokeWidth=3;fontSize=15;" parent="1" source="48" target="29" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="74" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;" edge="1" parent="1" source="48" target="73">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="48" value="ValidatorComposite" style="shape=ext;double=1;rounded=1;whiteSpace=wrap;html=1;fontSize=15;" parent="1" vertex="1">
@@ -146,7 +143,7 @@
                     <mxGeometry x="1082.5" y="640" width="195" height="70" as="geometry"/>
                 </mxCell>
                 <mxCell id="57" value="&lt;span style=&quot;color: rgb(240, 240, 240);&quot;&gt;EmailValidatorInterface&lt;/span&gt;" style="shape=ext;double=1;rounded=1;whiteSpace=wrap;html=1;fontSize=15;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
-                    <mxGeometry x="1068.75" y="320" width="220" height="70" as="geometry"/>
+                    <mxGeometry x="1070" y="335" width="220" height="70" as="geometry"/>
                 </mxCell>
                 <mxCell id="67" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;fontSize=15;" parent="1" source="66" target="39" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -163,9 +160,6 @@
                 </mxCell>
                 <mxCell id="68" value="React" style="shape=ext;double=1;rounded=1;whiteSpace=wrap;html=1;fontSize=15;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;" parent="1" vertex="1">
                     <mxGeometry x="100" y="-115" width="195" height="70" as="geometry"/>
-                </mxCell>
-                <mxCell id="73" value="ValidatorBuilder" style="shape=ext;double=1;rounded=1;whiteSpace=wrap;html=1;fontSize=15;" vertex="1" parent="1">
-                    <mxGeometry x="1360" y="35" width="221.25" height="70" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
