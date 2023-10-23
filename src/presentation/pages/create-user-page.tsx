@@ -1,14 +1,19 @@
 import React from "react";
 import { ValidatorInterface } from "../protocols";
+import { CreateUserUseCase } from "../../domain/protocols";
 
 type Props = {
   validator: ValidatorInterface;
+  createUserService: CreateUserUseCase.Service;
 };
 
-export const CreateUserPage: React.FC<Props> = ({ validator }: Props) => {
+export const CreateUserPage: React.FC<Props> = ({
+  validator,
+  createUserService,
+}: Props) => {
   return (
     <>
-      <h1>Create User Page</h1>
+      <form></form>
     </>
   );
 };
