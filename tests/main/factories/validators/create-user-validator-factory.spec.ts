@@ -19,9 +19,9 @@ describe("CreateUserValidatorFactory", () => {
     const { sut } = makeSut();
     expect((sut as any).validators).toEqual([
       new RequiredFieldValidator("name"),
-      new RequiredFieldValidator("password"),
       new RequiredFieldValidator("email"),
       new EmailValidator("email"),
+      new RequiredFieldValidator("password"),
     ]);
   });
 });
