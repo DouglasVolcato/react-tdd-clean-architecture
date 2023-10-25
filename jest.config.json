@@ -1,9 +1,12 @@
 {
   "roots": ["<rootDir>/tests"],
-  "collectCoverageFrom": ["<rootDir>/src/**/*"],
+  "collectCoverageFrom": ["<rootDir>/src/**/*.{ts,tsx}", "!<rootDir>/src/index.tsx"],
   "coverageDirectory": "coverage",
-  "testEnvironment": "node",
+  "testEnvironment": "jsdom", 
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
   "transform": {
-    ".+\\.ts$": "ts-jest"
+    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest",
+    "^.+\\.(css|scss)$": "jest-transform-css"
   }
 }
