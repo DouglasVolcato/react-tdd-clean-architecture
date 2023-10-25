@@ -1,4 +1,4 @@
-import { ClientPostRequestSenderInterface } from "../../../src/data/contracts";
+import { ClientPostRequestSenderInterface } from "../../../src/data/protocols";
 import { CreateUserService } from "../../../src/data/services";
 import {
   makeUserEntity,

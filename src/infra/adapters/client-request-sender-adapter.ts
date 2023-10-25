@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ClientPostRequestSenderInterface } from "../../data/contracts";
+import { ClientPostRequestSenderInterface } from "../../data/protocols";
 
 export class ClientRequestSenderAdapter
   implements ClientPostRequestSenderInterface

@@ -1,4 +1,4 @@
-import { ClientPostRequestSenderInterface } from "../../../src/data/contracts";
+import { ClientPostRequestSenderInterface } from "../../../src/data/protocols";
 import { makeUserEntity } from "../entities/user-entity-mock";
 
 export class ClientPostRequestSenderStub

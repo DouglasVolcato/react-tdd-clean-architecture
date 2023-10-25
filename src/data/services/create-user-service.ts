@@ -1,5 +1,5 @@
 import { CreateUserUseCase } from "../../domain/protocols/index";
-import { ClientPostRequestSenderInterface } from "../contracts";
+import { ClientPostRequestSenderInterface } from "../protocols";
 
 export class CreateUserService implements CreateUserUseCase.Service {
   private readonly url: string;

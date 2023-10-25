@@ -1,5 +1,5 @@
 import { ClientRequestSenderAdapter } from "../../../src/infra/adapters/client-request-sender-adapter";
-import { ClientPostRequestSenderInterface } from "../../../src/data/contracts";
+import { ClientPostRequestSenderInterface } from "../../../src/data/protocols";
 import axios from "axios";
 
 const urlLink = "any_url";
