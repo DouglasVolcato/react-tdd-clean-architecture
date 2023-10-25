@@ -14,7 +14,7 @@ class ValidatorStub implements ValidatorInterface {
 class CreateUserServiceStub implements CreateUserUseCase.Service {
   public execute(
     input: CreateUserUseCase.Input
-  ): Promise<CreateUserUseCase.Output> {
+  ): Promise<CreateUserUseCase.Output | Error> {
     return Promise.resolve(makeUserEntity());
   }
 }

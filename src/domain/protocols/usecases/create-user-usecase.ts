@@ -1,6 +1,8 @@
 export namespace CreateUserUseCase {
   export interface Service {
-    execute(input: CreateUserUseCase.Input): Promise<CreateUserUseCase.Output>;
+    execute(
+      input: CreateUserUseCase.Input
+    ): Promise<CreateUserUseCase.Output | Error>;
   }
 
   export type Input = {

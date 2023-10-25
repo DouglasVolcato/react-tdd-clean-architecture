@@ -1,4 +1,5 @@
 import { ClientPostRequestSenderInterface } from "../../../src/data/protocols";
+import { DefaultError } from "../../../src/data/errors";
 import { CreateUserService } from "../../../src/data/services";
 import {
   makeUserEntity,
@@ -58,5 +59,15 @@ describe("CreateUserService", () => {
     });
 
     expect(async () => await sut.execute(makeUserDto())).rejects.toThrow();
+  });
+
+  test("Should return an error if ClientPostRequestSender returns undefined", async () => {
+    const { sut, clientPostRequestSender } = makeSut("valid_api_url");
+    jest
+      .spyOn(clientPostRequestSender, "post")
+      .mockReturnValueOnce(Promise.resolve(undefined));
+    const error = await sut.execute(makeUserDto());
+
+    expect(error).toBeInstanceOf(DefaultError);
   });
 });
