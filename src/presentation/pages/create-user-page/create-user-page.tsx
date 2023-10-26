@@ -29,26 +29,25 @@ export const CreateUserPage: React.FC<Props> = ({
     password: "",
   });
 
-  useEffect(() => {
-    if (formError.show) {
-      try {
-        const error = validator.validate(userData);
-        if (error) {
-          setFormError((old) => ({ ...old, message: error.message }));
-          setLockSubmit(true);
-        } else {
-          setFormError((old) => ({ ...old, show: false, message: "" }));
-          setLockSubmit(false);
-        }
-      } catch (error) {
-        setFormError((old) => ({
-          ...old,
-          show: true,
-          message: "An error occurred",
-        }));
+  const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const error = await createUserService.execute(userData);
+      if (error instanceof Error) {
+        handleFormError(error.message);
       }
+    } catch (error) {
+      handleFormError("An error occurred");
     }
-  }, [userData]);
+  };
+
+  const handleFormError = (message: string) => {
+    setFormError((old) => ({
+      ...old,
+      show: true,
+      message,
+    }));
+  };
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -56,25 +55,22 @@ export const CreateUserPage: React.FC<Props> = ({
     setFormError((old) => ({ ...old, show: true }));
   };
 
-  const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      const error = await createUserService.execute(userData);
-      if (error instanceof Error) {
-        setFormError((old) => ({
-          ...old,
-          show: true,
-          message: error.message,
-        }));
+  useEffect(() => {
+    if (formError.show) {
+      try {
+        const error = validator.validate(userData);
+        if (error) {
+          handleFormError(error.message);
+          setLockSubmit(true);
+        } else {
+          setFormError((old) => ({ ...old, show: false, message: "" }));
+          setLockSubmit(false);
+        }
+      } catch (error) {
+        handleFormError("An error occurred");
       }
-    } catch (error) {
-      setFormError((old) => ({
-        ...old,
-        show: true,
-        message: "An error occurred",
-      }));
     }
-  };
+  }, [userData]);
 
   return (
     <div className="create-user-page">
@@ -103,15 +99,13 @@ export const CreateUserPage: React.FC<Props> = ({
           onChange={onInputChange}
         />
 
-        {formError.show ? (
+        {formError.show && (
           <ErrorMessageComponent message={formError.message} />
-        ) : (
-          <></>
         )}
 
         <ButtonComponent
           disabled={lockSubmit}
-          name={"Submit"}
+          name="Submit"
           type={ButtonTypeEnum.SUBMIT}
         />
       </form>
