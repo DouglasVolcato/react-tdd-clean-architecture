@@ -26,7 +26,7 @@ const makeSut = (mocks?: SutMockTypes): void => {
     />
   );
 };
-
+ 
 describe("CreateUserPage", () => {
   test("Should initiate with empty values", async () => {
     makeSut();
@@ -127,7 +127,7 @@ describe("CreateUserPage", () => {
 
     await waitFor(() => {
       expect(screenErrorMessage).toBeTruthy();
-      expect(screenErrorMessage?.innerHTML).toBe("An error ocurred");
+      expect(screenErrorMessage?.innerHTML).toBe("An error occurred");
     });
   });
 
@@ -148,7 +148,7 @@ describe("CreateUserPage", () => {
 
     await waitFor(() => {
       expect(screenErrorMessage).toBeTruthy();
-      expect(screenErrorMessage?.innerHTML).toBe("An error ocurred");
+      expect(screenErrorMessage?.innerHTML).toBe("An error occurred");
     });
   });
 
