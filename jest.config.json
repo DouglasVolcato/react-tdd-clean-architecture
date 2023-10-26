@@ -8,5 +8,8 @@
     "^.+\\.(ts|tsx)$": "ts-jest",
     "^.+\\.(js|jsx)$": "babel-jest",
     "^.+\\.(css|scss)$": "jest-transform-css"
+  },
+  "moduleNameMapper": {
+    "\\.(css|scss)$": "identity-obj-proxy"
   }
 }
