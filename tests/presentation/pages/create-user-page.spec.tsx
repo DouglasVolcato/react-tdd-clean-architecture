@@ -1,4 +1,4 @@
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor, act } from "@testing-library/react";
 import { ValidatorInterface } from "../../../src/presentation/protocols";
 import { CreateUserPage } from "../../../src/presentation/pages";
 import { CreateUserUseCase } from "../../../src/domain/protocols";
@@ -189,4 +189,35 @@ describe("CreateUserPage", () => {
       expect(screenErrorMessage?.innerHTML).toBe("An error ocurred");
     });
   });
+
+  test("Should the error message if CreateUserService returns an error", async () => {
+    const mockErrorMessage = "Any error message";
+    const userData = makeUserDto();
+    const createUserServiceMock = new CreateUserServiceStub();
+    jest.spyOn(createUserServiceMock, "execute").mockReturnValueOnce(Promise.resolve(new Error(mockErrorMessage)));
+    makeSut({ createUserService: createUserServiceMock });
+
+    fireEvent.change(screen.getByTestId("name-input"), {
+      target: { value: userData.name },
+    });
+    fireEvent.change(screen.getByTestId("email-input"), {
+      target: { value: userData.email },
+    });
+    fireEvent.change(screen.getByTestId("password-input"), {
+      target: { value: userData.password },
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("submit-button"));
+    })
+
+    const screenErrorMessage: HTMLParagraphElement | null =
+      screen.queryByTestId("error-message");
+
+    await waitFor(() => {
+      expect(screenErrorMessage).toBeTruthy();
+      expect(screenErrorMessage?.innerHTML).toBe(mockErrorMessage);
+    });
+  });
 });
+
