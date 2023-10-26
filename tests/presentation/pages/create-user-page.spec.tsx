@@ -1,8 +1,8 @@
-import { render, fireEvent, screen, waitFor, act } from "@testing-library/react";
+import { makeUserEntity, makeUserDto, DomTestHelpers } from "../../test-utils";
 import { ValidatorInterface } from "../../../src/presentation/protocols";
 import { CreateUserPage } from "../../../src/presentation/pages";
 import { CreateUserUseCase } from "../../../src/domain/protocols";
-import { makeUserEntity, makeUserDto } from "../../test-utils";
+import { render, waitFor } from "@testing-library/react";
 import React from "react";
 
 class ValidatorStub implements ValidatorInterface {
@@ -38,13 +38,11 @@ const makeSut = (mocks?: SutMockTypes): void => {
 describe("CreateUserPage", () => {
   test("Should initiate with empty values", async () => {
     makeSut();
-    const nameInput: HTMLInputElement = screen.getByTestId("name-input");
-    const emailInput: HTMLInputElement = screen.getByTestId("email-input");
-    const passwordInput: HTMLInputElement =
-      screen.getByTestId("password-input");
-    const submitButton: HTMLButtonElement = screen.getByTestId("submit-button");
-    const screenErrorMessage: HTMLParagraphElement | null =
-      screen.queryByTestId("error-message");
+    const nameInput = DomTestHelpers.getInputElementById("name-input");
+    const emailInput = DomTestHelpers.getInputElementById("email-input");
+    const passwordInput = DomTestHelpers.getInputElementById("password-input");
+    const submitButton = DomTestHelpers.getButtonElementById("submit-button");
+    const screenErrorMessage = DomTestHelpers.getElementById("error-message");
 
     expect(nameInput.value).toBe("");
     expect(passwordInput.value).toBe("");
@@ -61,12 +59,9 @@ describe("CreateUserPage", () => {
       .mockReturnValueOnce(new Error(mockErrorMessage));
     makeSut({ validator: mockValidator });
 
-    fireEvent.change(screen.getByTestId("name-input"), {
-      target: { value: "any_name" },
-    });
+    await DomTestHelpers.changeInputValue("name-input", "any_name");
 
-    const screenErrorMessage: HTMLParagraphElement | null =
-      screen.queryByTestId("error-message");
+    const screenErrorMessage = DomTestHelpers.getElementById("error-message");
 
     await waitFor(() => {
       expect(screenErrorMessage).toBeTruthy();
@@ -79,13 +74,10 @@ describe("CreateUserPage", () => {
     jest.spyOn(mockValidator, "validate").mockReturnValueOnce(undefined);
     makeSut({ validator: mockValidator });
 
-    fireEvent.change(screen.getByTestId("name-input"), {
-      target: { value: "any_name" },
-    });
+    await DomTestHelpers.changeInputValue("name-input", "any_name");
 
-    const submitButton: HTMLButtonElement = screen.getByTestId("submit-button");
-    const screenErrorMessage: HTMLParagraphElement | null =
-      screen.queryByTestId("error-message");
+    const submitButton = DomTestHelpers.getButtonElementById("submit-button");
+    const screenErrorMessage = DomTestHelpers.getElementById("error-message");
 
     await waitFor(() => {
       expect(screenErrorMessage).toBeNull();
@@ -99,15 +91,9 @@ describe("CreateUserPage", () => {
     const validatorSpy = jest.spyOn(mockValidator, "validate");
     makeSut({ validator: mockValidator });
 
-    fireEvent.change(screen.getByTestId("name-input"), {
-      target: { value: userData.name },
-    });
-    fireEvent.change(screen.getByTestId("email-input"), {
-      target: { value: userData.email },
-    });
-    fireEvent.change(screen.getByTestId("password-input"), {
-      target: { value: userData.password },
-    });
+    await DomTestHelpers.changeInputValue("name-input", userData.name);
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
 
     await waitFor(() => {
       expect(validatorSpy).toHaveBeenCalledTimes(3);
@@ -124,16 +110,10 @@ describe("CreateUserPage", () => {
       .mockReturnValueOnce(Promise.resolve(makeUserEntity()));
     makeSut({ createUserService: createUserServiceMock });
 
-    fireEvent.change(screen.getByTestId("name-input"), {
-      target: { value: userData.name },
-    });
-    fireEvent.change(screen.getByTestId("email-input"), {
-      target: { value: userData.email },
-    });
-    fireEvent.change(screen.getByTestId("password-input"), {
-      target: { value: userData.password },
-    });
-    fireEvent.click(screen.getByTestId("submit-button"));
+    await DomTestHelpers.changeInputValue("name-input", userData.name);
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
+    await DomTestHelpers.clickButton("submit-button");
 
     await waitFor(() => {
       expect(createUserServiceSpy).toHaveBeenCalledTimes(1);
@@ -149,12 +129,9 @@ describe("CreateUserPage", () => {
     });
     makeSut({ validator: validatorMock });
 
-    fireEvent.change(screen.getByTestId("name-input"), {
-      target: { value: userData.name },
-    });
+    await DomTestHelpers.changeInputValue("name-input", userData.name);
 
-    const screenErrorMessage: HTMLParagraphElement | null =
-      screen.queryByTestId("error-message");
+    const screenErrorMessage = DomTestHelpers.getElementById("error-message");
 
     await waitFor(() => {
       expect(screenErrorMessage).toBeTruthy();
@@ -170,19 +147,12 @@ describe("CreateUserPage", () => {
     });
     makeSut({ createUserService: createUserServiceMock });
 
-    fireEvent.change(screen.getByTestId("name-input"), {
-      target: { value: userData.name },
-    });
-    fireEvent.change(screen.getByTestId("email-input"), {
-      target: { value: userData.email },
-    });
-    fireEvent.change(screen.getByTestId("password-input"), {
-      target: { value: userData.password },
-    });
-    fireEvent.click(screen.getByTestId("submit-button"));
+    await DomTestHelpers.changeInputValue("name-input", userData.name);
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
+    await DomTestHelpers.clickButton("submit-button");
 
-    const screenErrorMessage: HTMLParagraphElement | null =
-      screen.queryByTestId("error-message");
+    const screenErrorMessage = DomTestHelpers.getElementById("error-message");
 
     await waitFor(() => {
       expect(screenErrorMessage).toBeTruthy();
@@ -194,25 +164,17 @@ describe("CreateUserPage", () => {
     const mockErrorMessage = "Any error message";
     const userData = makeUserDto();
     const createUserServiceMock = new CreateUserServiceStub();
-    jest.spyOn(createUserServiceMock, "execute").mockReturnValueOnce(Promise.resolve(new Error(mockErrorMessage)));
+    jest
+      .spyOn(createUserServiceMock, "execute")
+      .mockReturnValueOnce(Promise.resolve(new Error(mockErrorMessage)));
     makeSut({ createUserService: createUserServiceMock });
 
-    fireEvent.change(screen.getByTestId("name-input"), {
-      target: { value: userData.name },
-    });
-    fireEvent.change(screen.getByTestId("email-input"), {
-      target: { value: userData.email },
-    });
-    fireEvent.change(screen.getByTestId("password-input"), {
-      target: { value: userData.password },
-    });
+    await DomTestHelpers.changeInputValue("name-input", userData.name);
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
+    await DomTestHelpers.clickButton("submit-button");
 
-    await act(async () => {
-      fireEvent.click(screen.getByTestId("submit-button"));
-    })
-
-    const screenErrorMessage: HTMLParagraphElement | null =
-      screen.queryByTestId("error-message");
+    const screenErrorMessage = DomTestHelpers.getElementById("error-message");
 
     await waitFor(() => {
       expect(screenErrorMessage).toBeTruthy();
@@ -220,4 +182,3 @@ describe("CreateUserPage", () => {
     });
   });
 });
-
