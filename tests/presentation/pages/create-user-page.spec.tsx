@@ -1,23 +1,15 @@
-import { makeUserEntity, makeUserDto, DomTestHelpers } from "../../test-utils";
 import { ValidatorInterface } from "../../../src/presentation/protocols";
 import { CreateUserPage } from "../../../src/presentation/pages";
 import { CreateUserUseCase } from "../../../src/domain/protocols";
 import { render, waitFor } from "@testing-library/react";
+import {
+  makeUserEntity,
+  makeUserDto,
+  DomTestHelpers,
+  ValidatorStub,
+  CreateUserServiceStub,
+} from "../../test-utils";
 import React from "react";
-
-class ValidatorStub implements ValidatorInterface {
-  public validate(data: any): Error | undefined {
-    return;
-  }
-}
-
-class CreateUserServiceStub implements CreateUserUseCase.Service {
-  public execute(
-    input: CreateUserUseCase.Input
-  ): Promise<CreateUserUseCase.Output | Error> {
-    return Promise.resolve(makeUserEntity());
-  }
-}
 
 type SutMockTypes = {
   validator?: ValidatorInterface;
