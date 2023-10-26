@@ -1,7 +1,12 @@
 .error-message {
   color: #770b0b;
-  font-size: 14px;
+  font-size: 17px;
   margin-top: -10px;
   margin-bottom: 10px;
   font-weight: bold;
+  text-align: center;
+}
+
+.error-message::first-letter {
+  text-transform: capitalize;
 }
