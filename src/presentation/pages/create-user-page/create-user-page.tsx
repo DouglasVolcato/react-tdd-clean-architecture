@@ -53,7 +53,14 @@ export const CreateUserPage: React.FC<Props> = ({
   const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await createUserService.execute(userData);
+      const error = await createUserService.execute(userData);
+      if (error instanceof Error) {
+        setFormError((old) => ({
+          ...old,
+          show: true,
+          message: error.message,
+        }));
+      }
     } catch (error) {
       setFormError((old) => ({
         ...old,
