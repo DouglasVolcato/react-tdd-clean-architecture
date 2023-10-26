@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { ValidatorInterface } from "../../protocols";
 import { CreateUserUseCase } from "../../../domain/protocols";
+import {
+  InputComponent,
+  ErrorMessageComponent,
+  ButtonComponent,
+  ButtonTypeEnum,
+} from "../../components";
 import "./styles.scss";
 
 type Props = {
@@ -38,11 +44,11 @@ export const CreateUserPage: React.FC<Props> = ({
         setFormError((old) => ({
           ...old,
           show: true,
-          message: "An error ocurred",
+          message: "An error occurred",
         }));
       }
     }
-  }, [userData.name, userData.email, userData.password]);
+  }, [userData]);
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -65,48 +71,50 @@ export const CreateUserPage: React.FC<Props> = ({
       setFormError((old) => ({
         ...old,
         show: true,
-        message: "An error ocurred",
+        message: "An error occurred",
       }));
     }
   };
 
   return (
-    <>
-      <form onSubmit={onFormSubmit}>
-        <label htmlFor="name">Name</label>
-        <input
-          data-testid="name-input"
-          onChange={onInputChange}
+    <div className="create-user-page">
+      <form onSubmit={onFormSubmit} className="form-container">
+        <InputComponent
+          label="Name"
           type="text"
           name="name"
+          value={userData.name}
+          onChange={onInputChange}
         />
 
-        <label htmlFor="email">Email</label>
-        <input
-          data-testid="email-input"
-          onChange={onInputChange}
+        <InputComponent
+          label="Email"
           type="email"
           name="email"
+          value={userData.email}
+          onChange={onInputChange}
         />
 
-        <label htmlFor="password">Password</label>
-        <input
-          data-testid="password-input"
-          onChange={onInputChange}
+        <InputComponent
+          label="Password"
           type="text"
           name="password"
+          value={userData.password}
+          onChange={onInputChange}
         />
 
         {formError.show ? (
-          <p data-testid="error-message">{formError.message}</p>
+          <ErrorMessageComponent message={formError.message} />
         ) : (
           <></>
         )}
 
-        <button disabled={lockSubmit} data-testid="submit-button" type="submit">
-          Submit
-        </button>
+        <ButtonComponent
+          disabled={lockSubmit}
+          name={"Submit"}
+          type={ButtonTypeEnum.SUBMIT}
+        />
       </form>
-    </>
+    </div>
   );
 };
