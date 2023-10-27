@@ -1,5 +1,5 @@
 import { ClientPostRequestSenderInterface } from "../../../src/data/protocols";
-import { DefaultError } from "../../../src/data/errors";
+import { DefaultError, ApiError } from "../../../src/data/errors";
 import { CreateUserService } from "../../../src/data/services";
 import {
   makeUserEntity,
@@ -69,5 +69,15 @@ describe("CreateUserService", () => {
     const error = await sut.execute(makeUserDto());
 
     expect(error).toBeInstanceOf(DefaultError);
+  });
+
+  test("Should return an error if ClientPostRequestSender returns an object with error property", async () => {
+    const { sut, clientPostRequestSender } = makeSut("valid_api_url");
+    jest
+      .spyOn(clientPostRequestSender, "post")
+      .mockReturnValueOnce(Promise.resolve({ error: "any_error_message" }));
+    const error = await sut.execute(makeUserDto());
+
+    expect(error).toBeInstanceOf(ApiError);
   });
 });
