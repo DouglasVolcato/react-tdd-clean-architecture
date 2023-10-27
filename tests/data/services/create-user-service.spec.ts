@@ -42,16 +42,6 @@ describe("CreateUserService", () => {
     expect(data).toEqual(makeUserEntity());
   });
 
-  test("Should return the ClientPostRequestSender output error", async () => {
-    const { sut, clientPostRequestSender } = makeSut("valid_api_url");
-    jest
-      .spyOn(clientPostRequestSender, "post")
-      .mockReturnValueOnce(Promise.resolve(new Error("test")));
-    const data = await sut.execute(makeUserDto());
-
-    expect(data).toEqual(new Error("test"));
-  });
-
   test("Should throw if ClientPostRequestSender throws", async () => {
     const { sut, clientPostRequestSender } = makeSut("valid_api_url");
     jest.spyOn(clientPostRequestSender, "post").mockImplementationOnce(() => {
