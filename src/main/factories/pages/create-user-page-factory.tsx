@@ -4,11 +4,11 @@ import { makeCreateUserValidationFactory } from "../validators/create-user-valid
 import { CreateUserService } from "../../../data/services";
 import { ClientRequestSenderAdapter } from "../../../infra/adapters";
 
-export function makeCreateUserPageFactory(): ReactNode {
+export function makeCreateUserPageFactory(apiUrl: string): ReactNode {
   const validator = makeCreateUserValidationFactory();
   const clientPostRequestSender = new ClientRequestSenderAdapter();
   const createUserService = new CreateUserService(
-    "/user",
+    "/user/create",
     clientPostRequestSender
   );
   return (
