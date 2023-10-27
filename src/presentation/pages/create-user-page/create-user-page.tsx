@@ -93,7 +93,7 @@ export const CreateUserPage: React.FC<Props> = ({
 
         <InputComponent
           label="Password"
-          type="text"
+          type="password"
           name="password"
           value={userData.password}
           onChange={onInputChange}
