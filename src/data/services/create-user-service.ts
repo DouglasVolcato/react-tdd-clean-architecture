@@ -18,7 +18,6 @@ export class CreateUserService implements CreateUserUseCase.Service {
     input: CreateUserUseCase.Input
   ): Promise<CreateUserUseCase.Output | Error> {
     const data = await this.clientPostRequestSender.post(this.url, input);
-
     if (!data) {
       return new DefaultError();
     } else if (data.error) {

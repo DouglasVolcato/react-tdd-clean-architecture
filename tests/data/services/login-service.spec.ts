@@ -1,25 +1,35 @@
-import { ClientPostRequestSenderInterface } from "../../../src/data/protocols";
 import { DefaultError, ApiError } from "../../../src/data/errors";
-import { CreateUserService } from "../../../src/data/services";
+import { LoginService } from "../../../src/data/services";
 import {
-  makeUserEntity,
+  ClientPostRequestSenderInterface,
+  TokenStorageInterface,
+} from "../../../src/data/protocols";
+import {
   makeUserDto,
   ClientPostRequestSenderStub,
+  makeLoginDto,
+  TokenStorageStub,
 } from "../../test-utils";
 
 type SutTypes = {
-  sut: CreateUserService;
+  sut: LoginService;
   clientPostRequestSender: ClientPostRequestSenderInterface;
+  tokenStorage: TokenStorageInterface;
 };
 
 const makeSut = (userCreationUrl = "any_url"): SutTypes => {
   const clientPostRequestSender = new ClientPostRequestSenderStub();
-  const sut = new CreateUserService(userCreationUrl, clientPostRequestSender);
+  const tokenStorage = new TokenStorageStub();
+  const sut = new LoginService(
+    userCreationUrl,
+    clientPostRequestSender,
+    tokenStorage
+  );
 
-  return { sut, clientPostRequestSender };
+  return { sut, clientPostRequestSender, tokenStorage };
 };
 
-describe("CreateUserService", () => {
+describe("LoginService", () => {
   test("Should call ClientPostRequestSender with correct values", async () => {
     const { sut, clientPostRequestSender } = makeSut("valid_api_url");
     const requestSenderSpy = jest.spyOn(clientPostRequestSender, "post");
@@ -32,14 +42,18 @@ describe("CreateUserService", () => {
     );
   });
 
-  test("Should return the ClientPostRequestSender output data", async () => {
-    const { sut, clientPostRequestSender } = makeSut("valid_api_url");
+  test("Should call the TokenStorage return the ClientPostRequestSender output data", async () => {
+    const { sut, clientPostRequestSender, tokenStorage } =
+      makeSut("valid_api_url");
     jest
       .spyOn(clientPostRequestSender, "post")
-      .mockReturnValueOnce(Promise.resolve(makeUserEntity()));
+      .mockReturnValueOnce(Promise.resolve(makeLoginDto()));
+    const tokenStorageSpy = jest.spyOn(tokenStorage, "store");
     const data = await sut.execute(makeUserDto());
 
-    expect(data).toEqual(makeUserEntity());
+    expect(data).toEqual(makeLoginDto().user);
+    expect(tokenStorageSpy).toHaveBeenCalledTimes(1);
+    expect(tokenStorageSpy).toHaveBeenCalledWith("token", makeLoginDto().token);
   });
 
   test("Should throw if ClientPostRequestSender throws", async () => {
