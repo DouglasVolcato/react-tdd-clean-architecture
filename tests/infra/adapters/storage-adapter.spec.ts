@@ -50,19 +50,19 @@ describe("StorageAdapter", () => {
 
     test("Should return an object if getItem returns a json object", async () => {
       const { sut, storage } = makeSut();
-      const value = {value: 'any_value'};
+      const value = { value: "any_value" };
       jest.spyOn(storage, "getItem").mockReturnValueOnce(JSON.stringify(value));
+      const obj = await sut.get("any_key");
 
-      const obj = await sut.get("any_key")
       expect(obj).toEqual(value);
     });
 
     test("Should return a string if getItem returns string", async () => {
       const { sut, storage } = makeSut();
-      const value = 'any_value';
+      const value = "any_value";
       jest.spyOn(storage, "getItem").mockReturnValueOnce(value);
+      const str = await sut.get("any_key");
 
-      const str = await sut.get("any_key")
       expect(str).toEqual(value);
     });
 
@@ -72,9 +72,7 @@ describe("StorageAdapter", () => {
         throw new Error();
       });
 
-      expect(
-        async () => await sut.get("any_key")
-      ).rejects.toThrow();
+      expect(async () => await sut.get("any_key")).rejects.toThrow();
     });
   });
 });
