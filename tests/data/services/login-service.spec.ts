@@ -17,11 +17,11 @@ type SutTypes = {
   tokenStorage: TokenStorageInterface;
 };
 
-const makeSut = (userCreationUrl = "any_url"): SutTypes => {
+const makeSut = (userLoginUrl = "any_url"): SutTypes => {
   const clientPostRequestSender = new ClientPostRequestSenderStub();
   const tokenStorage = new TokenStorageStub();
   const sut = new LoginService(
-    userCreationUrl,
+    userLoginUrl,
     clientPostRequestSender,
     tokenStorage
   );
