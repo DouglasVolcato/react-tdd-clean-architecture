@@ -11,11 +11,11 @@ export class LoginService implements LoginUseCase.Service {
   private readonly tokenStorage: TokenStorageInterface;
 
   public constructor(
-    userCreationUrl: string,
+    loginUrl: string,
     clientPostRequestSender: ClientPostRequestSenderInterface,
     tokenStorage: TokenStorageInterface
   ) {
-    this.url = userCreationUrl;
+    this.url = loginUrl;
     this.clientPostRequestSender = clientPostRequestSender;
     this.tokenStorage = tokenStorage;
   }
