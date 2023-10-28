@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { LoginService } from "../../../data/services";
 import { LoginPage } from "../../../presentation/pages";
 import { makeLoginValidationFactory } from "..";

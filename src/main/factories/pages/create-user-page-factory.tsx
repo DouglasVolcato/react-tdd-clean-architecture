@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { CreateUserPage } from "../../../presentation/pages";
 import { makeCreateUserValidationFactory } from "..";
 import { CreateUserService } from "../../../data/services";
