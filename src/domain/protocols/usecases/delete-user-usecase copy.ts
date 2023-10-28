@@ -1,6 +1,6 @@
-export namespace DeleteUserByTokenUseCase {
+export namespace DeleteUserUseCase {
   export interface Service {
-    execute(): Promise<DeleteUserByTokenUseCase.Output | Error>;
+    execute(): Promise<DeleteUserUseCase.Output | Error>;
   }
 
   export type Input = {
