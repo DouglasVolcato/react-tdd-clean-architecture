@@ -1,5 +1,5 @@
 import React from "react";
-import './styles.scss'
+import "./styles.scss";
 
 export enum ButtonTypeEnum {
   BUTTON = "button",
@@ -19,9 +19,9 @@ export const ButtonComponent: React.FC<SubmitButtonProps> = ({
 }: SubmitButtonProps) => {
   return (
     <button
-    className="button"
+      className="button"
       disabled={disabled}
-      data-testid={`${name.toLowerCase()}-button`}
+      data-testid={`${name.toLowerCase().replace(" ", "")}-button`}
       type={type}
     >
       {name}
