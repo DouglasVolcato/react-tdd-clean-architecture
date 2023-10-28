@@ -10,12 +10,16 @@ type SubmitButtonProps = {
   name: string;
   type: ButtonTypeEnum;
   disabled: boolean;
+  onClickCallback?: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => any;
 };
 
 export const ButtonComponent: React.FC<SubmitButtonProps> = ({
   name,
   disabled,
   type,
+  onClickCallback,
 }: SubmitButtonProps) => {
   return (
     <button
@@ -23,6 +27,7 @@ export const ButtonComponent: React.FC<SubmitButtonProps> = ({
       disabled={disabled}
       data-testid={`${name.toLowerCase().replace(" ", "")}-button`}
       type={type}
+      onClick={onClickCallback}
     >
       {name}
     </button>
