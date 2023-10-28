@@ -1,12 +1,12 @@
-import React from "react";
 import { HeaderComponent } from "../../../src/presentation/components";
 import { GetUserByTokenUseCase } from "../../../src/domain/protocols";
+import { render, waitFor } from "@testing-library/react";
 import {
   DomTestHelpers,
   GetUserByTokenServiceStub,
   makeUserEntity,
 } from "../../test-utils";
-import { render, waitFor } from "@testing-library/react";
+import React from "react";
 
 type SutMockTypes = {
   getUserByTokenService?: GetUserByTokenUseCase.Service;
