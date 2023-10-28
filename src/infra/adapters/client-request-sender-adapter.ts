@@ -28,7 +28,13 @@ export class ClientRequestSenderAdapter
     return response.data;
   }
 
-  public delete(url: string, authToken: string): Promise<any> {
-    throw new Error("Method not implemented.");
+  public async delete(url: string, authToken: string): Promise<any> {
+    const response = await axios.delete(url, {
+      validateStatus: () => true,
+      headers: {
+        authorization: authToken,
+      },
+    });
+    return response.data;
   }
 }
