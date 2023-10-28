@@ -20,6 +20,9 @@ jest.mock("axios", () => ({
   get: jest
     .fn()
     .mockImplementationOnce(async () => Promise.resolve(apiResponse)),
+  delete: jest
+    .fn()
+    .mockImplementationOnce(async () => Promise.resolve(apiResponse)),
 }));
 
 type SutTypes = {
@@ -94,6 +97,39 @@ describe("ClientRequestSenderAdapter", () => {
       });
 
       expect(async () => await sut.get(urlLink, authToken)).rejects.toThrow();
+    });
+  });
+
+  describe("delete", () => {
+    test("Should call axios delete with correct values", async () => {
+      const { sut } = makeSut();
+      await sut.delete(urlLink, authToken);
+      const axiosPostCalls = jest.spyOn(axios, "delete").mock.calls;
+
+      expect(axios.delete).toHaveBeenCalledTimes(1);
+      expect(axiosPostCalls[0][0]).toBe(urlLink);
+      expect(axiosPostCalls[0][1]?.headers?.authorization).toBe(authToken);
+    });
+
+    test("Should return the correct data from axios post", async () => {
+      const { sut } = makeSut();
+      jest
+        .spyOn(axios, "delete")
+        .mockReturnValueOnce(Promise.resolve(apiResponse));
+      const data = await sut.delete(urlLink, authToken);
+
+      expect(data).toEqual(apiResponse.data);
+    });
+
+    test("Should throw if axios delete throws", async () => {
+      const { sut } = makeSut();
+      jest.spyOn(axios, "delete").mockImplementationOnce(() => {
+        throw new Error();
+      });
+
+      expect(
+        async () => await sut.delete(urlLink, authToken)
+      ).rejects.toThrow();
     });
   });
 });
