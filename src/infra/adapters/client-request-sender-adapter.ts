@@ -1,13 +1,34 @@
 import axios from "axios";
-import { ClientPostRequestSenderInterface } from "../../data/protocols";
+import {
+  ClientDeleteRequestSenderInterface,
+  ClientGetRequestSenderInterface,
+  ClientPostRequestSenderInterface,
+} from "../../data/protocols";
 
 export class ClientRequestSenderAdapter
-  implements ClientPostRequestSenderInterface
+  implements
+    ClientPostRequestSenderInterface,
+    ClientGetRequestSenderInterface,
+    ClientDeleteRequestSenderInterface
 {
   public async post(url: string, data: any): Promise<any> {
     const response = await axios.post(url, data, {
       validateStatus: () => true,
     });
     return response.data;
+  }
+
+  public async get(url: string, authToken: string): Promise<any> {
+    const response = await axios.get(url, {
+      validateStatus: () => true,
+      headers: {
+        authorization: authToken,
+      },
+    });
+    return response.data;
+  }
+
+  public delete(url: string, authToken: string): Promise<any> {
+    throw new Error("Method not implemented.");
   }
 }
