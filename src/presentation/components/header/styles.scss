@@ -1,0 +1,16 @@
+.header {
+  background-color: #3498db;
+  padding: 20px;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+
+  h2 {
+    color: #fff;
+    font-size: 24px;
+    margin: 0;
+  }
+}

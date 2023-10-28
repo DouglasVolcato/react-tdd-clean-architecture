@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route path="/signup" Component={makeCreateUserPageFactory} />
         <Route path="/login" Component={makeLoginPageFactory} />
-        <Route path="/delete" Component={makeDeleteUserPageFactory} />
+        <Route path="/home" Component={makeDeleteUserPageFactory} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
