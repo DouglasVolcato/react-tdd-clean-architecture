@@ -1,5 +1,5 @@
 import { GetUserByTokenUseCase } from "../../../domain/protocols";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.scss";
 
 type HeaderProps = {
@@ -9,9 +9,28 @@ type HeaderProps = {
 export const HeaderComponent: React.FC<HeaderProps> = ({
   getUserByTokenService,
 }: HeaderProps) => {
+  const [loggedUser, setLoggedUser] =
+    useState<GetUserByTokenUseCase.Output | null>(null);
+
+  useEffect(() => {
+    if (!loggedUser) {
+      try {
+        getUserByTokenService.execute().then((foundUser) => {
+          if (!(foundUser instanceof Error)) {
+            setLoggedUser(foundUser);
+          }
+        });
+      } catch (error) {}
+    }
+  }, []);
+
   return (
     <div className="header" data-testid="header">
-      <h2>Page Header</h2>
+      {loggedUser ? (
+        <h2 data-testid="logged-user-name">{loggedUser.name}</h2>
+      ) : (
+        <h2>Not logged in</h2>
+      )}
     </div>
   );
 };
