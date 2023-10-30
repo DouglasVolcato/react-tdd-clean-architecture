@@ -1,16 +1,28 @@
-import { StorageAdapter } from "../../../infra/adapters";
+import React from "react";
 import { PrivatePageProxy } from "../../../presentation/proxies";
+import { GetUserByTokenService } from "../../../data/services";
+import {
+  ClientRequestSenderAdapter,
+  StorageAdapter,
+} from "../../../infra/adapters";
 
 export const makePrivatePageProxyFactory = (
   privatePage: React.FC,
   loginPageRoute: string
 ): React.FC<any> => {
+  const apiUrl = "http://localhost:3000";
   const tokenStorage = new StorageAdapter();
+  const clientRequestSender = new ClientRequestSenderAdapter();
+  const getUserByTokenService = new GetUserByTokenService(
+    apiUrl + "/user/get",
+    clientRequestSender,
+    tokenStorage
+  );
   const page: React.FC<any> = () => (
     <PrivatePageProxy
-      privatePage={privatePage}
+      PrivatePage={privatePage}
       loginPageRoute={loginPageRoute}
-      tokenStorage={tokenStorage}
+      getUserByTokenService={getUserByTokenService}
     />
   );
   return page;

@@ -1,33 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { TokenStorageInterface } from "../../data/protocols";
 import { LoadingSpinner } from "../components";
 import { useNavigate } from "react-router-dom";
+import { GetUserByTokenUseCase } from "../../domain/protocols";
+import { useGlobalContext } from "../contexts";
 
 type Props = {
-  tokenStorage: TokenStorageInterface;
-  privatePage: React.FC;
+  getUserByTokenService: GetUserByTokenUseCase.Service;
+  PrivatePage: React.FC<any>;
   loginPageRoute: string;
 };
 
 export const PrivatePageProxy: React.FC<Props> = ({
-  tokenStorage,
-  privatePage,
+  getUserByTokenService,
+  PrivatePage,
   loginPageRoute,
 }) => {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
   const navigate = useNavigate();
-  const checkIfTokenExists = async () => {
-    const tokenExists = await tokenStorage.get("token");
-    if (tokenExists) {
-      setAuthenticated(true);
-    } else {
-      navigate(loginPageRoute);
-    }
-  };
+  const globalContext = useGlobalContext();
+  const [loggedUser, setLoggedUser] =
+    useState<GetUserByTokenUseCase.Output | null>(null);
 
   useEffect(() => {
-    checkIfTokenExists();
-  }, []);
+    if (!loggedUser) {
+      try {
+        getUserByTokenService.execute().then((foundUser) => {
+          if (!(foundUser instanceof Error)) {
+            if (globalContext) {
+              globalContext.onUserLogin(foundUser);
+              setLoggedUser(foundUser);
+              return;
+            }
+          } else {
+            navigate(loginPageRoute);
+          }
+        });
+      } catch (error) {
+        navigate(loginPageRoute);
+      }
+    }
+  }, [
+    loggedUser,
+    getUserByTokenService,
+    globalContext,
+    navigate,
+    loginPageRoute,
+  ]);
 
-  return <>{authenticated ? privatePage : <LoadingSpinner loading={true} />}</>;
+  return (
+    <>{loggedUser ? <PrivatePage /> : <LoadingSpinner loading={true} />}</>
+  );
 };
