@@ -6,5 +6,5 @@ type Props = {
 };
 
 export const LoadingSpinner: React.FC<Props> = ({ loading }: Props) => {
-  return <div>{loading ? <div className="loading-spinner" /> : null}</div>;
+  return <div>{loading ? <div data-testid='loading-spinner' className="loading-spinner" /> : null}</div>;
 };
