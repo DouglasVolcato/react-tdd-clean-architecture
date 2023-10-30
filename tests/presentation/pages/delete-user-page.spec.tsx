@@ -4,11 +4,7 @@ import {
   DeleteUserUseCase,
   GetUserByTokenUseCase,
 } from "../../../src/domain/protocols";
-import {
-  DeleteUserServiceStub,
-  DomTestHelpers,
-  GetUserByTokenServiceStub,
-} from "../../test-utils";
+import { DeleteUserServiceStub, DomTestHelpers } from "../../test-utils";
 import React from "react";
 
 type SutMockTypes = {
@@ -19,9 +15,6 @@ type SutMockTypes = {
 const makeSut = (mocks?: SutMockTypes): void => {
   render(
     <DeleteUserPage
-      getUserByTokenService={
-        mocks?.getUserByTokenService ?? new GetUserByTokenServiceStub()
-      }
       deleteUserService={
         mocks?.deleteUserService ?? new DeleteUserServiceStub()
       }

@@ -3,29 +3,14 @@ import { useGlobalContext } from "../../contexts";
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
 
-type HeaderProps = {
-  getUserByTokenService: GetUserByTokenUseCase.Service;
-};
-
-export const HeaderComponent: React.FC<HeaderProps> = ({
-  getUserByTokenService,
-}: HeaderProps) => {
+export const HeaderComponent: React.FC = () => {
   const globalContext = useGlobalContext();
   const [loggedUser, setLoggedUser] =
     useState<GetUserByTokenUseCase.Output | null>(null);
 
   useEffect(() => {
-    if (!loggedUser) {
-      try {
-        getUserByTokenService.execute().then((foundUser) => {
-          if (!(foundUser instanceof Error)) {
-            if(globalContext){
-              globalContext?.onUserLogin(foundUser)
-              setLoggedUser(foundUser);
-            }
-          }
-        });
-      } catch (error) {}
+    if (!loggedUser && globalContext) {
+      setLoggedUser(globalContext.getLoggedUser());
     }
   }, []);
 

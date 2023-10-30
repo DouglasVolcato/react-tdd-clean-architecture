@@ -1,9 +1,6 @@
 import React from "react";
 import { DeleteUserPage } from "../../../presentation/pages";
-import {
-  DeleteUserService,
-  GetUserByTokenService,
-} from "../../../data/services";
+import { DeleteUserService } from "../../../data/services";
 import {
   ClientRequestSenderAdapter,
   StorageAdapter,
@@ -18,15 +15,5 @@ export const makeDeleteUserPageFactory: React.FC = () => {
     clientRequestSender,
     tokenStorage
   );
-  const getUserByTokenService = new GetUserByTokenService(
-    apiUrl + "/user/get",
-    clientRequestSender,
-    tokenStorage
-  );
-  return (
-    <DeleteUserPage
-      deleteUserService={deleteUserService}
-      getUserByTokenService={getUserByTokenService}
-    />
-  );
+  return <DeleteUserPage deleteUserService={deleteUserService} />;
 };
