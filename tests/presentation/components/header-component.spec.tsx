@@ -7,7 +7,7 @@ import {
   makeUserEntity,
 } from "../../test-utils";
 import React from "react";
-import { GlobalContext } from "../../../src/main/contexts";
+import { GlobalContext } from "../../../src/presentation/contexts";
 
 type SutMockTypes = {
   getUserByTokenService?: GetUserByTokenUseCase.Service;

@@ -1,5 +1,5 @@
 import { GetUserByTokenUseCase } from "../../../domain/protocols";
-import { useGlobalContext } from "../../../main/contexts";
+import { useGlobalContext } from "../../contexts";
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
 
