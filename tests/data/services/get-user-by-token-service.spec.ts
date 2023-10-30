@@ -41,6 +41,14 @@ describe("LoginService", () => {
     expect(storageSpy).toHaveBeenCalledWith("token");
   });
 
+  test("Should return an error if TokenStorage returns null", async () => {
+    const { sut, tokenStorage } = makeSut("valid_api_url");
+    jest.spyOn(tokenStorage, "get").mockReturnValueOnce(Promise.resolve(null));
+    const error = await sut.execute();
+
+    expect(error).toBeInstanceOf(DefaultError);
+  });
+
   test("Should throw if TokenStorage throws", async () => {
     const { sut, tokenStorage } = makeSut("valid_api_url");
     jest.spyOn(tokenStorage, "get").mockImplementationOnce(() => {
