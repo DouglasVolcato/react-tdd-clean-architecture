@@ -22,6 +22,9 @@ export class GetUserByTokenService implements GetUserByTokenUseCase.Service {
 
   public async execute(): Promise<GetUserByTokenUseCase.Output | Error> {
     const token = await this.tokenStorage.get("token");
+    if (!token) {
+      return new DefaultError();
+    }
     const data = await this.clientGetRequestSender.get(this.url, token);
     if (!data) {
       return new DefaultError();
