@@ -1,7 +1,7 @@
 {
   "name": "react-tdd-clean-architecture",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.0.0",
   "type": "module",
   "author": "Douglas Volcato",
   "scripts": {
@@ -13,7 +13,6 @@
     "test-coverage": "jest --passWithNoTests --coverage"
   },
   "dependencies": {
-    "@types/email-validator": "^1.0.6",
     "axios": "^1.5.1",
     "email-validator": "^2.0.4",
     "react": "^18.2.0",
@@ -22,6 +21,7 @@
     "sass": "^1.69.4"
   },
   "devDependencies": {
+    "@types/email-validator": "^1.0.6",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.5",
