@@ -1,6 +1,7 @@
-import React from "react";
 import { PrivatePageProxy } from "../../../presentation/proxies";
 import { GetUserByTokenService } from "../../../data/services";
+import { Env } from "../../config";
+import React from "react";
 import {
   ClientRequestSenderAdapter,
   StorageAdapter,
@@ -10,7 +11,7 @@ export const makePrivatePageProxyFactory = (
   privatePage: React.FC,
   loginPageRoute: string
 ): React.FC<any> => {
-  const apiUrl = "http://localhost:3000";
+  const apiUrl = Env.API_URL;
   const tokenStorage = new StorageAdapter();
   const clientRequestSender = new ClientRequestSenderAdapter();
   const getUserByTokenService = new GetUserByTokenService(
