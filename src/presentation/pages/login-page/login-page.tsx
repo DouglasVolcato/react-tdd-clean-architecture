@@ -8,6 +8,7 @@ import {
   ButtonTypeEnum,
   LoadingSpinner,
   FormTitleComponent,
+  AnchorComponent,
 } from "../../components";
 import "./styles.scss";
 
@@ -88,7 +89,6 @@ export const LoginPage: React.FC<Props> = ({
           value={userData.email}
           onChange={onInputChange}
         />
-
         <InputComponent
           label="Password"
           type="password"
@@ -96,16 +96,15 @@ export const LoginPage: React.FC<Props> = ({
           value={userData.password}
           onChange={onInputChange}
         />
-
         {formError.show && (
           <ErrorMessageComponent message={formError.message} />
         )}
-
         <ButtonComponent
           disabled={lockSubmit}
           name="Submit"
           type={ButtonTypeEnum.SUBMIT}
         />
+        <AnchorComponent name="Create an account" redirectLink="/signup" />
       </form>
       <LoadingSpinner loading={loading} />
     </div>
