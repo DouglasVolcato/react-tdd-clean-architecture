@@ -1,4 +1,4 @@
-import './styles/index.scss'
+import "./styles/index.scss";
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -17,7 +17,7 @@ const Router = () => {
         <Route path="/signup" Component={makeCreateUserPageFactory} />
         <Route path="/login" Component={makeLoginPageFactory} />
         <Route
-          path="/home"
+          path="/"
           Component={makePrivatePageProxyFactory(
             makeDeleteUserPageFactory,
             "/login"
