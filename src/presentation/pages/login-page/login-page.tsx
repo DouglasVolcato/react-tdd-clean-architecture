@@ -7,6 +7,7 @@ import {
   ButtonComponent,
   ButtonTypeEnum,
   LoadingSpinner,
+  FormTitleComponent,
 } from "../../components";
 import "./styles.scss";
 
@@ -79,6 +80,7 @@ export const LoginPage: React.FC<Props> = ({
   return (
     <div className="login-page">
       <form onSubmit={onFormSubmit} className="form-container">
+        <FormTitleComponent title="Login" />
         <InputComponent
           label="Email"
           type="email"

@@ -7,6 +7,7 @@ import {
   ButtonComponent,
   ButtonTypeEnum,
   LoadingSpinner,
+  FormTitleComponent,
 } from "../../components";
 import "./styles.scss";
 
@@ -80,6 +81,8 @@ export const CreateUserPage: React.FC<Props> = ({
   return (
     <div className="create-user-page">
       <form onSubmit={onFormSubmit} className="form-container">
+        <FormTitleComponent title="Create an account" />
+
         <InputComponent
           label="Name"
           type="text"

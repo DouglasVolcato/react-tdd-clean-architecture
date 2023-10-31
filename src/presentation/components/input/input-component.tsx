@@ -20,7 +20,7 @@ export const InputComponent: React.FC<InputFieldProps> = ({
     <div className="input-field">
       <label htmlFor={name}>{label}</label>
       <input
-        data-testid={`${name.toLowerCase().replace(" ", "")}-input`}
+        data-testid={`${name.toLowerCase().replace(/\s/g, "")}-input`}
         onChange={onChange}
         type={type}
         name={name}

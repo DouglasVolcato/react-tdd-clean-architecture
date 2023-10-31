@@ -25,7 +25,7 @@ export const ButtonComponent: React.FC<SubmitButtonProps> = ({
     <button
       className="button"
       disabled={disabled}
-      data-testid={`${name.toLowerCase().replace(" ", "")}-button`}
+      data-testid={`${name.toLowerCase().replace(/\s/g, "")}-button`}
       type={type}
       onClick={onClickCallback}
     >
