@@ -1,10 +1,12 @@
 import { DeleteUserUseCase } from "../../../domain/protocols";
-import React from "react";
+import React, { useState } from "react";
 import "./styles.scss";
 import {
   ButtonComponent,
   ButtonTypeEnum,
+  ErrorMessageComponent,
   HeaderComponent,
+  LoadingSpinner,
 } from "../../components";
 
 type Props = {
@@ -14,10 +16,32 @@ type Props = {
 export const DeleteUserPage: React.FC<Props> = ({
   deleteUserService,
 }: Props) => {
+  const [loading, setLoading] = useState(false);
+  const [pageError, setPageError] = useState({
+    message: "",
+    show: false,
+  });
+
   const deleteUser = async () => {
     try {
-      await deleteUserService.execute();
-    } catch (error) {}
+      setLoading(true);
+      const error = await deleteUserService.execute();
+      if (error instanceof Error) {
+        handlePageError(error.message);
+      }
+    } catch (error) {
+      handlePageError("An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePageError = (message: string) => {
+    setPageError((old) => ({
+      ...old,
+      show: true,
+      message,
+    }));
   };
 
   return (
@@ -29,6 +53,8 @@ export const DeleteUserPage: React.FC<Props> = ({
         type={ButtonTypeEnum.BUTTON}
         onClickCallback={deleteUser}
       />
+      {pageError.show && <ErrorMessageComponent message={pageError.message} />}
+      <LoadingSpinner loading={loading} />
     </div>
   );
 };

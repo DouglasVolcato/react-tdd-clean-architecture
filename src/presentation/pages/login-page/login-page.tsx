@@ -6,6 +6,7 @@ import {
   ErrorMessageComponent,
   ButtonComponent,
   ButtonTypeEnum,
+  LoadingSpinner,
 } from "../../components";
 import "./styles.scss";
 
@@ -18,6 +19,7 @@ export const LoginPage: React.FC<Props> = ({
   validator,
   loginService,
 }: Props) => {
+  const [loading, setLoading] = useState(false);
   const [lockSubmit, setLockSubmit] = useState(true);
   const [formError, setFormError] = useState({
     message: "",
@@ -30,6 +32,7 @@ export const LoginPage: React.FC<Props> = ({
 
   const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     try {
       const error = await loginService.execute(userData);
       if (error instanceof Error) {
@@ -37,6 +40,8 @@ export const LoginPage: React.FC<Props> = ({
       }
     } catch (error) {
       handleFormError("An error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,6 +105,7 @@ export const LoginPage: React.FC<Props> = ({
           type={ButtonTypeEnum.SUBMIT}
         />
       </form>
+      <LoadingSpinner loading={loading} />
     </div>
   );
 };
