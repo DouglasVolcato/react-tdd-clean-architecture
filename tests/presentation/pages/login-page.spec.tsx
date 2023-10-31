@@ -10,6 +10,15 @@ import {
   LoginServiceStub,
 } from "../../test-utils";
 import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+jest.mock("react-router-dom", () => {
+  const originalModule = jest.requireActual("react-router-dom");
+  return {
+    ...originalModule,
+    useNavigate: jest.fn(),
+  };
+});
 
 type SutMockTypes = {
   validator?: ValidatorInterface;
@@ -18,10 +27,19 @@ type SutMockTypes = {
 
 const makeSut = (mocks?: SutMockTypes): void => {
   render(
-    <LoginPage
-      validator={mocks?.validator ?? new ValidatorStub()}
-      loginService={mocks?.loginService ?? new LoginServiceStub()}
-    />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <LoginPage
+              validator={mocks?.validator ?? new ValidatorStub()}
+              loginService={mocks?.loginService ?? new LoginServiceStub()}
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
@@ -32,6 +50,9 @@ describe("LoginPage", () => {
     const emailInput = DomTestHelpers.getInputElementById("email-input");
     const passwordInput = DomTestHelpers.getInputElementById("password-input");
     const submitButton = DomTestHelpers.getButtonElementById("submit-button");
+    const signupAnchor = DomTestHelpers.getElementById(
+      "createanaccount-anchor"
+    );
     const screenErrorMessage = DomTestHelpers.getElementById("error-message");
     const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
 
@@ -39,6 +60,7 @@ describe("LoginPage", () => {
     expect(passwordInput.value).toBe("");
     expect(emailInput.value).toBe("");
     expect(submitButton.disabled).toBeTruthy();
+    expect(signupAnchor?.innerHTML).toBe("Create an account");
     expect(screenErrorMessage).toBeNull();
     expect(loadingSpinner).toBeNull();
   });
@@ -211,6 +233,19 @@ describe("LoginPage", () => {
     await waitFor(() => {
       const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
       expect(loadingSpinner).toBeFalsy();
+    });
+  });
+
+  test("Should redirect to signup page", async () => {
+    const navigateMock = jest.fn();
+    require("react-router-dom").useNavigate.mockImplementation(
+      () => navigateMock
+    );
+    makeSut();
+    await DomTestHelpers.clickButton("createanaccount-anchor");
+
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith("/signup");
     });
   });
 });

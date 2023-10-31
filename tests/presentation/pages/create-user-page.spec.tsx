@@ -10,6 +10,15 @@ import {
   CreateUserServiceStub,
 } from "../../test-utils";
 import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+jest.mock("react-router-dom", () => {
+  const originalModule = jest.requireActual("react-router-dom");
+  return {
+    ...originalModule,
+    useNavigate: jest.fn(),
+  };
+});
 
 type SutMockTypes = {
   validator?: ValidatorInterface;
@@ -18,12 +27,21 @@ type SutMockTypes = {
 
 const makeSut = (mocks?: SutMockTypes): void => {
   render(
-    <CreateUserPage
-      validator={mocks?.validator ?? new ValidatorStub()}
-      createUserService={
-        mocks?.createUserService ?? new CreateUserServiceStub()
-      }
-    />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <CreateUserPage
+              validator={mocks?.validator ?? new ValidatorStub()}
+              createUserService={
+                mocks?.createUserService ?? new CreateUserServiceStub()
+              }
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
@@ -37,6 +55,7 @@ describe("CreateUserPage", () => {
     const emailInput = DomTestHelpers.getInputElementById("email-input");
     const passwordInput = DomTestHelpers.getInputElementById("password-input");
     const submitButton = DomTestHelpers.getButtonElementById("submit-button");
+    const loginAnchor = DomTestHelpers.getElementById("makelogin-anchor");
     const screenErrorMessage = DomTestHelpers.getElementById("error-message");
     const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
 
@@ -44,6 +63,7 @@ describe("CreateUserPage", () => {
     expect(nameInput.value).toBe("");
     expect(passwordInput.value).toBe("");
     expect(emailInput.value).toBe("");
+    expect(loginAnchor?.innerHTML).toBe("Make Login");
     expect(submitButton.disabled).toBeTruthy();
     expect(screenErrorMessage).toBeNull();
     expect(loadingSpinner).toBeNull();
@@ -221,6 +241,19 @@ describe("CreateUserPage", () => {
     await waitFor(() => {
       const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
       expect(loadingSpinner).toBeFalsy();
+    });
+  });
+
+  test("Should redirect to login page", async () => {
+    const navigateMock = jest.fn();
+    require("react-router-dom").useNavigate.mockImplementation(
+      () => navigateMock
+    );
+    makeSut();
+    await DomTestHelpers.clickButton("makelogin-anchor");
+
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith("/login");
     });
   });
 });
