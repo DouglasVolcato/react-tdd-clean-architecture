@@ -30,6 +30,9 @@ const makeSut = (mocks?: SutMockTypes): void => {
 describe("CreateUserPage", () => {
   test("Should initiate with empty values", async () => {
     makeSut();
+    const formTitle = DomTestHelpers.getElementById(
+      "form-title-createanaccount"
+    );
     const nameInput = DomTestHelpers.getInputElementById("name-input");
     const emailInput = DomTestHelpers.getInputElementById("email-input");
     const passwordInput = DomTestHelpers.getInputElementById("password-input");
@@ -37,6 +40,7 @@ describe("CreateUserPage", () => {
     const screenErrorMessage = DomTestHelpers.getElementById("error-message");
     const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
 
+    expect(formTitle?.innerHTML).toBe("Create an account");
     expect(nameInput.value).toBe("");
     expect(passwordInput.value).toBe("");
     expect(emailInput.value).toBe("");

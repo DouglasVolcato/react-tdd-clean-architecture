@@ -28,12 +28,14 @@ const makeSut = (mocks?: SutMockTypes): void => {
 describe("LoginPage", () => {
   test("Should initiate with empty values", async () => {
     makeSut();
+    const formTitle = DomTestHelpers.getElementById("form-title-login");
     const emailInput = DomTestHelpers.getInputElementById("email-input");
     const passwordInput = DomTestHelpers.getInputElementById("password-input");
     const submitButton = DomTestHelpers.getButtonElementById("submit-button");
     const screenErrorMessage = DomTestHelpers.getElementById("error-message");
     const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
 
+    expect(formTitle?.innerHTML).toBe("Login");
     expect(passwordInput.value).toBe("");
     expect(emailInput.value).toBe("");
     expect(submitButton.disabled).toBeTruthy();
