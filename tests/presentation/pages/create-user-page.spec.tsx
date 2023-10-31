@@ -26,7 +26,7 @@ const makeSut = (mocks?: SutMockTypes): void => {
     />
   );
 };
- 
+
 describe("CreateUserPage", () => {
   test("Should initiate with empty values", async () => {
     makeSut();
@@ -35,12 +35,14 @@ describe("CreateUserPage", () => {
     const passwordInput = DomTestHelpers.getInputElementById("password-input");
     const submitButton = DomTestHelpers.getButtonElementById("submit-button");
     const screenErrorMessage = DomTestHelpers.getElementById("error-message");
+    const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
 
     expect(nameInput.value).toBe("");
     expect(passwordInput.value).toBe("");
     expect(emailInput.value).toBe("");
     expect(submitButton.disabled).toBeTruthy();
     expect(screenErrorMessage).toBeNull();
+    expect(loadingSpinner).toBeNull();
   });
 
   test("Should show the validator error message", async () => {
@@ -152,8 +154,8 @@ describe("CreateUserPage", () => {
     });
   });
 
-  test("Should the error message if CreateUserService returns an error", async () => {
-    const mockErrorMessage = "Any error message";
+  test("Should show the error message if CreateUserService returns an error", async () => {
+    const mockErrorMessage = "any_error_message";
     const userData = makeUserDto();
     const createUserServiceMock = new CreateUserServiceStub();
     jest
@@ -171,6 +173,50 @@ describe("CreateUserPage", () => {
     await waitFor(() => {
       expect(screenErrorMessage).toBeTruthy();
       expect(screenErrorMessage?.innerHTML).toBe(mockErrorMessage);
+    });
+  });
+
+  test("Should show loading spinner on button click", async () => {
+    const userData = makeUserDto();
+    const createUserServiceMock = new CreateUserServiceStub();
+    jest.spyOn(createUserServiceMock, "execute");
+    jest
+      .spyOn(createUserServiceMock, "execute")
+      .mockImplementationOnce(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        return Promise.resolve(makeUserEntity());
+      });
+    makeSut({ createUserService: createUserServiceMock });
+
+    await DomTestHelpers.changeInputValue("name-input", userData.name);
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
+    await DomTestHelpers.clickButton("submit-button");
+
+    const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
+    expect(loadingSpinner).toBeTruthy();
+  });
+
+  test("Should remove the loading spinner after CreateUserService return", async () => {
+    const userData = makeUserDto();
+    const createUserServiceMock = new CreateUserServiceStub();
+    jest.spyOn(createUserServiceMock, "execute");
+    jest
+      .spyOn(createUserServiceMock, "execute")
+      .mockImplementationOnce(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        return Promise.resolve(makeUserEntity());
+      });
+    makeSut({ createUserService: createUserServiceMock });
+
+    await DomTestHelpers.changeInputValue("name-input", userData.name);
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
+    await DomTestHelpers.clickButton("submit-button");
+
+    await waitFor(() => {
+      const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
+      expect(loadingSpinner).toBeFalsy();
     });
   });
 });

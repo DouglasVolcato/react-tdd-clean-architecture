@@ -32,11 +32,13 @@ describe("LoginPage", () => {
     const passwordInput = DomTestHelpers.getInputElementById("password-input");
     const submitButton = DomTestHelpers.getButtonElementById("submit-button");
     const screenErrorMessage = DomTestHelpers.getElementById("error-message");
+    const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
 
     expect(passwordInput.value).toBe("");
     expect(emailInput.value).toBe("");
     expect(submitButton.disabled).toBeTruthy();
     expect(screenErrorMessage).toBeNull();
+    expect(loadingSpinner).toBeNull();
   });
 
   test("Should show the validator error message", async () => {
@@ -169,6 +171,44 @@ describe("LoginPage", () => {
     await waitFor(() => {
       expect(screenErrorMessage).toBeTruthy();
       expect(screenErrorMessage?.innerHTML).toBe(mockErrorMessage);
+    });
+  });
+
+  test("Should show loading spinner on button click", async () => {
+    const userData = makeUserDto();
+    const loginServiceMock = new LoginServiceStub();
+    jest.spyOn(loginServiceMock, "execute");
+    jest.spyOn(loginServiceMock, "execute").mockImplementationOnce(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      return Promise.resolve(makeUserEntity());
+    });
+    makeSut({ loginService: loginServiceMock });
+
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
+    await DomTestHelpers.clickButton("submit-button");
+
+    const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
+    expect(loadingSpinner).toBeTruthy();
+  });
+
+  test("Should remove the loading spinner after CreateUserService return", async () => {
+    const userData = makeUserDto();
+    const loginServiceMock = new LoginServiceStub();
+    jest.spyOn(loginServiceMock, "execute");
+    jest.spyOn(loginServiceMock, "execute").mockImplementationOnce(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      return Promise.resolve(makeUserEntity());
+    });
+    makeSut({ loginService: loginServiceMock });
+
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
+    await DomTestHelpers.clickButton("submit-button");
+
+    await waitFor(() => {
+      const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
+      expect(loadingSpinner).toBeFalsy();
     });
   });
 });
