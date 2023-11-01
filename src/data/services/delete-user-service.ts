@@ -1,11 +1,11 @@
-import { GetUserByTokenUseCase } from "../../domain/protocols/index";
+import { DeleteUserUseCase } from "../../domain/protocols";
 import { ApiError, DefaultError } from "../errors";
 import {
   ClientDeleteRequestSenderInterface,
   TokenStorageInterface,
 } from "../protocols";
 
-export class DeleteUserService implements GetUserByTokenUseCase.Service {
+export class DeleteUserService implements DeleteUserUseCase.Service {
   private readonly url: string;
   private readonly clientDeleteRequestSender: ClientDeleteRequestSenderInterface;
   private readonly tokenStorage: TokenStorageInterface;
@@ -20,9 +20,14 @@ export class DeleteUserService implements GetUserByTokenUseCase.Service {
     this.tokenStorage = tokenStorage;
   }
 
-  public async execute(): Promise<GetUserByTokenUseCase.Output | Error> {
+  public async execute({
+    userId,
+  }: DeleteUserUseCase.Input): Promise<DeleteUserUseCase.Output | Error> {
     const token = await this.tokenStorage.get("token");
-    const data = await this.clientDeleteRequestSender.delete(this.url, token);
+    const data = await this.clientDeleteRequestSender.delete(
+      `${this.url}/${userId}`,
+      token
+    );
     if (!data) {
       return new DefaultError();
     } else if (data.error) {

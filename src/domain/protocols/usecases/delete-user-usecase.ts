@@ -1,6 +1,8 @@
 export namespace DeleteUserUseCase {
   export interface Service {
-    execute(): Promise<DeleteUserUseCase.Output | Error>;
+    execute(
+      input: DeleteUserUseCase.Input
+    ): Promise<DeleteUserUseCase.Output | Error>;
   }
 
   export type Input = {

@@ -1,4 +1,5 @@
 import { DeleteUserUseCase } from "../../../domain/protocols";
+import { useGlobalContext } from "../../contexts";
 import React, { useState } from "react";
 import "./styles.scss";
 import {
@@ -16,6 +17,7 @@ type Props = {
 export const DeleteUserPage: React.FC<Props> = ({
   deleteUserService,
 }: Props) => {
+  const globalContext = useGlobalContext();
   const [loading, setLoading] = useState(false);
   const [pageError, setPageError] = useState({
     message: "",
@@ -25,7 +27,10 @@ export const DeleteUserPage: React.FC<Props> = ({
   const deleteUser = async () => {
     try {
       setLoading(true);
-      const error = await deleteUserService.execute();
+      const loggedUser = globalContext?.getLoggedUser();
+      const error = await deleteUserService.execute({
+        userId: loggedUser?.id || "",
+      });
       if (error instanceof Error) {
         handlePageError(error.message);
       }
