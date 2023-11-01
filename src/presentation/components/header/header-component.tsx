@@ -17,7 +17,7 @@ export const HeaderComponent: React.FC = () => {
   return (
     <div className="header" data-testid="header">
       {loggedUser ? (
-        <h2 data-testid="logged-user-name">{loggedUser.name}</h2>
+        <h2 data-testid="logged-user-name">Logged as {loggedUser.name}</h2>
       ) : (
         <h2>Not logged in</h2>
       )}
