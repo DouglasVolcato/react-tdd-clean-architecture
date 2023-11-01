@@ -236,7 +236,7 @@ describe("LoginPage", () => {
     });
   });
 
-  test("Should redirect to signup page", async () => {
+  test("Should redirect to signup page on anchor click", async () => {
     const navigateMock = jest.fn();
     require("react-router-dom").useNavigate.mockImplementation(
       () => navigateMock
@@ -246,6 +246,29 @@ describe("LoginPage", () => {
 
     await waitFor(() => {
       expect(navigateMock).toHaveBeenCalledWith("/signup");
+    });
+  });
+
+  test("Should redirect to home page if login was done", async () => {
+    const navigateMock = jest.fn();
+    require("react-router-dom").useNavigate.mockImplementation(
+      () => navigateMock
+    );
+    const userData = makeUserDto();
+    const loginServiceMock = new LoginServiceStub();
+    jest.spyOn(loginServiceMock, "execute");
+    jest.spyOn(loginServiceMock, "execute").mockImplementationOnce(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      return Promise.resolve(makeUserEntity());
+    });
+    makeSut({ loginService: loginServiceMock });
+
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
+    await DomTestHelpers.clickButton("submit-button");
+
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith("/");
     });
   });
 });

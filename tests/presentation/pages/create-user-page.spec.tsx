@@ -244,13 +244,39 @@ describe("CreateUserPage", () => {
     });
   });
 
-  test("Should redirect to login page", async () => {
+  test("Should redirect to login page on anchor click", async () => {
     const navigateMock = jest.fn();
     require("react-router-dom").useNavigate.mockImplementation(
       () => navigateMock
     );
     makeSut();
     await DomTestHelpers.clickButton("makelogin-anchor");
+
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith("/login");
+    });
+  });
+
+  test("Should redirect to login page if user was created on success", async () => {
+    const navigateMock = jest.fn();
+    require("react-router-dom").useNavigate.mockImplementation(
+      () => navigateMock
+    );
+    const userData = makeUserDto();
+    const createUserServiceMock = new CreateUserServiceStub();
+    jest.spyOn(createUserServiceMock, "execute");
+    jest
+      .spyOn(createUserServiceMock, "execute")
+      .mockImplementationOnce(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        return Promise.resolve(makeUserEntity());
+      });
+    makeSut({ createUserService: createUserServiceMock });
+
+    await DomTestHelpers.changeInputValue("name-input", userData.name);
+    await DomTestHelpers.changeInputValue("email-input", userData.email);
+    await DomTestHelpers.changeInputValue("password-input", userData.password);
+    await DomTestHelpers.clickButton("submit-button");
 
     await waitFor(() => {
       expect(navigateMock).toHaveBeenCalledWith("/login");

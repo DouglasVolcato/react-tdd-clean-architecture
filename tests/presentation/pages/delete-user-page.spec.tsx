@@ -13,6 +13,14 @@ import {
 import React from "react";
 import { GlobalContext } from "../../../src/presentation/contexts";
 
+jest.mock("react-router-dom", () => {
+  const originalModule = jest.requireActual("react-router-dom");
+  return {
+    ...originalModule,
+    useNavigate: jest.fn(),
+  };
+});
+
 type SutMockTypes = {
   getUserByTokenService?: GetUserByTokenUseCase.Service;
   deleteUserService?: DeleteUserUseCase.Service;
@@ -147,6 +155,27 @@ describe("DeleteUserPage", () => {
     await waitFor(() => {
       const loadingSpinner = DomTestHelpers.getElementById("loading-spinner");
       expect(loadingSpinner).toBeFalsy();
+    });
+  });
+
+  test("Should redirect to login page if user was deleted", async () => {
+    const navigateMock = jest.fn();
+    require("react-router-dom").useNavigate.mockImplementation(
+      () => navigateMock
+    );
+    const mockDeleteUserService = new DeleteUserServiceStub();
+    jest
+      .spyOn(mockDeleteUserService, "execute")
+      .mockImplementationOnce(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        return Promise.resolve(makeUserEntity());
+      });
+    makeSut({ deleteUserService: mockDeleteUserService });
+
+    await DomTestHelpers.clickButton("deleteuser-button");
+
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith("/login");
     });
   });
 });
