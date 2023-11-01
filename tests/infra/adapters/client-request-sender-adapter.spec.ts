@@ -77,7 +77,9 @@ describe("ClientRequestSenderAdapter", () => {
 
       expect(axios.get).toHaveBeenCalledTimes(1);
       expect(axiosPostCalls[0][0]).toBe(urlLink);
-      expect(axiosPostCalls[0][1]?.headers?.authorization).toBe(authToken);
+      expect(axiosPostCalls[0][1]?.headers?.authorization).toBe(
+        `Bearer ${authToken}`
+      );
     });
 
     test("Should return the correct data from axios post", async () => {
@@ -108,7 +110,9 @@ describe("ClientRequestSenderAdapter", () => {
 
       expect(axios.delete).toHaveBeenCalledTimes(1);
       expect(axiosPostCalls[0][0]).toBe(urlLink);
-      expect(axiosPostCalls[0][1]?.headers?.authorization).toBe(authToken);
+      expect(axiosPostCalls[0][1]?.headers?.authorization).toBe(
+        `Bearer ${authToken}`
+      );
     });
 
     test("Should return the correct data from axios post", async () => {
