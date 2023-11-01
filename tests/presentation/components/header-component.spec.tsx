@@ -28,7 +28,9 @@ describe("HeaderComponent", () => {
     await waitFor(() => {
       const loggedUserName = DomTestHelpers.getElementById("logged-user-name");
       expect(loggedUserName).toBeTruthy();
-      expect(loggedUserName?.innerHTML).toBe(makeUserEntity().name);
+      expect(loggedUserName?.innerHTML).toBe(
+        `Logged as ${makeUserEntity().name}`
+      );
       expect(mockGetLoggedUser).toHaveBeenCalledTimes(1);
       expect(mockGetLoggedUser).toHaveBeenCalledWith();
     });
