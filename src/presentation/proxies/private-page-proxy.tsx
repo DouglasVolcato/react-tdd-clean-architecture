@@ -20,24 +20,26 @@ export const PrivatePageProxy: React.FC<Props> = ({
   const [loggedUser, setLoggedUser] =
     useState<GetUserByTokenUseCase.Output | null>(null);
 
-  useEffect(() => {
-    if (!loggedUser) {
-      try {
-        getUserByTokenService.execute().then((foundUser) => {
-          if (!(foundUser instanceof Error)) {
-            if (globalContext) {
-              globalContext.onUserLogin(foundUser);
-              setLoggedUser(foundUser);
-              return;
-            }
-          } else {
-            navigate(loginPageRoute);
-          }
-        });
-      } catch (error) {
+  const getUser = async (): Promise<void> => {
+    if (loggedUser) return;
+    try {
+      const foundUser = await getUserByTokenService.execute();
+      if (!(foundUser instanceof Error)) {
+        if (globalContext) {
+          globalContext.onUserLogin(foundUser);
+          setLoggedUser(foundUser);
+          return;
+        }
+      } else {
         navigate(loginPageRoute);
       }
+    } catch (error) {
+      navigate(loginPageRoute);
     }
+  };
+
+  useEffect(() => {
+    getUser();
   }, [
     loggedUser,
     getUserByTokenService,
