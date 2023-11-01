@@ -22,7 +22,7 @@ export class ClientRequestSenderAdapter
     const response = await axios.get(url, {
       validateStatus: () => true,
       headers: {
-        authorization: authToken,
+        authorization: `Bearer ${authToken}`,
       },
     });
     return response.data;
@@ -32,7 +32,7 @@ export class ClientRequestSenderAdapter
     const response = await axios.delete(url, {
       validateStatus: () => true,
       headers: {
-        authorization: authToken,
+        authorization: `Bearer ${authToken}`,
       },
     });
     return response.data;
