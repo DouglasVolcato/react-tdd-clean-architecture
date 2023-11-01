@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ValidatorInterface } from "../../protocols";
 import { LoginUseCase } from "../../../domain/protocols";
+import { useNavigate } from "react-router-dom";
 import {
   InputComponent,
   ErrorMessageComponent,
@@ -21,6 +22,7 @@ export const LoginPage: React.FC<Props> = ({
   validator,
   loginService,
 }: Props) => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [lockSubmit, setLockSubmit] = useState(true);
   const [formError, setFormError] = useState({
@@ -39,6 +41,8 @@ export const LoginPage: React.FC<Props> = ({
       const error = await loginService.execute(userData);
       if (error instanceof Error) {
         handleFormError(error.message);
+      } else {
+        navigate("/");
       }
     } catch (error) {
       handleFormError("An error occurred");

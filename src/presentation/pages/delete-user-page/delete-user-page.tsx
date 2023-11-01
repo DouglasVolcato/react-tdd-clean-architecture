@@ -1,5 +1,6 @@
 import { DeleteUserUseCase } from "../../../domain/protocols";
 import { useGlobalContext } from "../../contexts";
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import "./styles.scss";
 import {
@@ -17,6 +18,7 @@ type Props = {
 export const DeleteUserPage: React.FC<Props> = ({
   deleteUserService,
 }: Props) => {
+  const navigate = useNavigate();
   const globalContext = useGlobalContext();
   const [loading, setLoading] = useState(false);
   const [pageError, setPageError] = useState({
@@ -33,6 +35,8 @@ export const DeleteUserPage: React.FC<Props> = ({
       });
       if (error instanceof Error) {
         handlePageError(error.message);
+      } else {
+        navigate("/login");
       }
     } catch (error) {
       handlePageError("An error occurred");
