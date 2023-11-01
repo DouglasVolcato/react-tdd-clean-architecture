@@ -1,4 +1,6 @@
 import { fireEvent, screen, act } from "@testing-library/react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { ReactElement } from "react";
 
 export const DomTestHelpers = {
   getInputElementById(inputId: string): HTMLInputElement {
@@ -25,5 +27,19 @@ export const DomTestHelpers = {
     await act(async () => {
       fireEvent.click(this.getInputElementById(buttonId));
     });
+  },
+
+  addRouter(
+    components: { element: React.ReactElement; route: string }[]
+  ): ReactElement {
+    return (
+      <BrowserRouter>
+        <Routes>
+          {components.map((item, key) => (
+            <Route key={key} path={item.route} element={item.element} />
+          ))}
+        </Routes>
+      </BrowserRouter>
+    );
   },
 };

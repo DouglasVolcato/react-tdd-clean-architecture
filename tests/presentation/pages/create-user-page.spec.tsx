@@ -2,6 +2,7 @@ import { ValidatorInterface } from "../../../src/presentation/protocols";
 import { CreateUserPage } from "../../../src/presentation/pages";
 import { CreateUserUseCase } from "../../../src/domain/protocols";
 import { render, waitFor } from "@testing-library/react";
+import React from "react";
 import {
   makeUserEntity,
   makeUserDto,
@@ -9,8 +10,6 @@ import {
   ValidatorStub,
   CreateUserServiceStub,
 } from "../../test-utils";
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 jest.mock("react-router-dom", () => {
   const originalModule = jest.requireActual("react-router-dom");
@@ -27,21 +26,21 @@ type SutMockTypes = {
 
 const makeSut = (mocks?: SutMockTypes): void => {
   render(
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
+    <>
+      {DomTestHelpers.addRouter([
+        {
+          route: "/",
+          element: (
             <CreateUserPage
               validator={mocks?.validator ?? new ValidatorStub()}
               createUserService={
                 mocks?.createUserService ?? new CreateUserServiceStub()
               }
             />
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          ),
+        },
+      ])}
+    </>
   );
 };
 

@@ -1,6 +1,7 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { GlobalContext } from "../../../src/presentation/contexts";
 import { DeleteUserPage } from "../../../src/presentation/pages";
 import { render, waitFor } from "@testing-library/react";
+import React from "react";
 import {
   DeleteUserUseCase,
   GetUserByTokenUseCase,
@@ -10,8 +11,6 @@ import {
   DomTestHelpers,
   makeUserEntity,
 } from "../../test-utils";
-import React from "react";
-import { GlobalContext } from "../../../src/presentation/contexts";
 
 jest.mock("react-router-dom", () => {
   const originalModule = jest.requireActual("react-router-dom");
@@ -32,22 +31,20 @@ const makeSut = (mocks?: SutMockTypes): void => {
   const getLoggedUser = mocks?.getLoggedUser ?? (() => makeUserEntity());
 
   render(
-    <BrowserRouter>
-      <GlobalContext.Provider value={{ onUserLogin, getLoggedUser }}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <DeleteUserPage
-                deleteUserService={
-                  mocks?.deleteUserService ?? new DeleteUserServiceStub()
-                }
-              />
-            }
-          />
-        </Routes>
-      </GlobalContext.Provider>
-    </BrowserRouter>
+    <GlobalContext.Provider value={{ onUserLogin, getLoggedUser }}>
+      {DomTestHelpers.addRouter([
+        {
+          route: "/",
+          element: (
+            <DeleteUserPage
+              deleteUserService={
+                mocks?.deleteUserService ?? new DeleteUserServiceStub()
+              }
+            />
+          ),
+        },
+      ])}
+    </GlobalContext.Provider>
   );
 };
 

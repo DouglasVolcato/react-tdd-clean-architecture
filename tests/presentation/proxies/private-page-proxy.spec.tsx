@@ -2,13 +2,12 @@ import { GetUserByTokenUseCase } from "../../../src/domain/protocols";
 import { PrivatePageProxy } from "../../../src/presentation/proxies";
 import { render, waitFor } from "@testing-library/react";
 import { GlobalContext } from "../../../src/presentation/contexts";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React from "react";
 import {
   DomTestHelpers,
   GetUserByTokenServiceStub,
   makeUserEntity,
 } from "../../test-utils";
-import React from "react";
 
 jest.mock("react-router-dom", () => {
   const originalModule = jest.requireActual("react-router-dom");
@@ -41,13 +40,11 @@ const makeSut = (mocks?: SutMockTypes): void => {
   );
 
   render(
-    <BrowserRouter>
-      <GlobalContext.Provider value={{ onUserLogin, getLoggedUser }}>
-        <Routes>
-          <Route path="/" element={<PrivatePageProxyComponent />} />
-        </Routes>
-      </GlobalContext.Provider>
-    </BrowserRouter>
+    <GlobalContext.Provider value={{ onUserLogin, getLoggedUser }}>
+      {DomTestHelpers.addRouter([
+        { element: <PrivatePageProxyComponent />, route: "/" },
+      ])}
+    </GlobalContext.Provider>
   );
 };
 

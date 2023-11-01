@@ -27,19 +27,19 @@ type SutMockTypes = {
 
 const makeSut = (mocks?: SutMockTypes): void => {
   render(
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
+    <>
+      {DomTestHelpers.addRouter([
+        {
+          route: "/",
+          element: (
             <LoginPage
               validator={mocks?.validator ?? new ValidatorStub()}
               loginService={mocks?.loginService ?? new LoginServiceStub()}
             />
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          ),
+        },
+      ])}
+    </>
   );
 };
 
