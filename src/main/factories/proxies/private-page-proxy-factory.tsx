@@ -15,7 +15,7 @@ export const makePrivatePageProxyFactory = (
   const tokenStorage = new StorageAdapter();
   const clientRequestSender = new ClientRequestSenderAdapter();
   const getUserByTokenService = new GetUserByTokenService(
-    apiUrl + "/user/get",
+    apiUrl + "/user/get/token",
     clientRequestSender,
     tokenStorage
   );
