@@ -35,7 +35,7 @@ describe("LoginService", () => {
   test("Should call TokenStorage with correct values", async () => {
     const { sut, tokenStorage } = makeSut("valid_api_url");
     const storageSpy = jest.spyOn(tokenStorage, "get");
-    await sut.execute();
+    await sut.execute({ userId: makeUserEntity().id });
 
     expect(storageSpy).toHaveBeenCalledTimes(1);
     expect(storageSpy).toHaveBeenCalledWith("token");
@@ -47,7 +47,9 @@ describe("LoginService", () => {
       throw new Error();
     });
 
-    expect(async () => await sut.execute()).rejects.toThrow();
+    expect(
+      async () => await sut.execute({ userId: makeUserEntity().id })
+    ).rejects.toThrow();
   });
 
   test("Should call ClientDeleteRequestSender with correct values", async () => {
@@ -57,10 +59,13 @@ describe("LoginService", () => {
     jest
       .spyOn(tokenStorage, "get")
       .mockReturnValueOnce(Promise.resolve(authToken));
-    await sut.execute();
+    await sut.execute({ userId: makeUserEntity().id });
 
     expect(requestSenderSpy).toHaveBeenCalledTimes(1);
-    expect(requestSenderSpy).toHaveBeenCalledWith("valid_api_url", authToken);
+    expect(requestSenderSpy).toHaveBeenCalledWith(
+      `valid_api_url/${makeUserEntity().id}`,
+      authToken
+    );
   });
 
   test("Should return the ClientDeleteRequestSender output data", async () => {
@@ -68,7 +73,7 @@ describe("LoginService", () => {
     jest
       .spyOn(clientDeleteRequestSender, "delete")
       .mockReturnValueOnce(Promise.resolve(makeUserEntity()));
-    const data = await sut.execute();
+    const data = await sut.execute({ userId: makeUserEntity().id });
 
     expect(data).toEqual(makeUserEntity());
   });
@@ -81,7 +86,9 @@ describe("LoginService", () => {
         throw new Error();
       });
 
-    expect(async () => await sut.execute()).rejects.toThrow();
+    expect(
+      async () => await sut.execute({ userId: makeUserEntity().id })
+    ).rejects.toThrow();
   });
 
   test("Should return an error if ClientDeleteRequestSender returns undefined", async () => {
@@ -89,7 +96,7 @@ describe("LoginService", () => {
     jest
       .spyOn(clientDeleteRequestSender, "delete")
       .mockReturnValueOnce(Promise.resolve(undefined));
-    const error = await sut.execute();
+    const error = await sut.execute({ userId: makeUserEntity().id });
 
     expect(error).toBeInstanceOf(DefaultError);
   });
@@ -99,7 +106,7 @@ describe("LoginService", () => {
     jest
       .spyOn(clientDeleteRequestSender, "delete")
       .mockReturnValueOnce(Promise.resolve({ error: "any_error_message" }));
-    const error = await sut.execute();
+    const error = await sut.execute({ userId: makeUserEntity().id });
 
     expect(error).toBeInstanceOf(ApiError);
   });
