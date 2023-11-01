@@ -1,5 +1,7 @@
+@import '../../styles/index.scss';
+
 .header {
-  background-color: #3498db;
+  background-color: $MediumColor;
   padding: 20px;
   text-align: center;
   position: fixed;
@@ -9,7 +11,7 @@
   z-index: 999;
 
   h2 {
-    color: #fff;
+    color: $LightColor;
     font-size: 24px;
     margin: 0;
   }

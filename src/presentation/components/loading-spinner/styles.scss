@@ -1,3 +1,5 @@
+@import '../../styles/index.scss';
+
 .loading-spinner {
   display: flex;
   justify-content: center;
@@ -7,7 +9,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: $LightColor;
   z-index: 9999;
 
   h2 {
@@ -18,8 +20,8 @@
     content: "";
     width: 100px;
     height: 100px;
-    border: 10px solid #f3f3f3;
-    border-top: 10px solid #3498db;
+    border: 10px solid $MediumLightColor;
+    border-top: 10px solid $DarkColor;
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }

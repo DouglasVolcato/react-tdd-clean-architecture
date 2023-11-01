@@ -1,5 +1,7 @@
+@import '../../styles/index.scss';
+
 .error-message {
-  color: #770b0b;
+  color: $Warn;
   font-size: 17px;
   margin-top: -10px;
   margin-bottom: 10px;
