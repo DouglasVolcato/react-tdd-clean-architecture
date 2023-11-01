@@ -1,3 +1,4 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { DeleteUserPage } from "../../../src/presentation/pages";
 import { render, waitFor } from "@testing-library/react";
 import {
@@ -10,19 +11,35 @@ import {
   makeUserEntity,
 } from "../../test-utils";
 import React from "react";
+import { GlobalContext } from "../../../src/presentation/contexts";
 
 type SutMockTypes = {
   getUserByTokenService?: GetUserByTokenUseCase.Service;
   deleteUserService?: DeleteUserUseCase.Service;
+  getLoggedUser?: () => GetUserByTokenUseCase.Output | null;
 };
 
 const makeSut = (mocks?: SutMockTypes): void => {
+  const onUserLogin = (loggedUser: any) => {};
+  const getLoggedUser = mocks?.getLoggedUser ?? (() => makeUserEntity());
+
   render(
-    <DeleteUserPage
-      deleteUserService={
-        mocks?.deleteUserService ?? new DeleteUserServiceStub()
-      }
-    />
+    <BrowserRouter>
+      <GlobalContext.Provider value={{ onUserLogin, getLoggedUser }}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <DeleteUserPage
+                deleteUserService={
+                  mocks?.deleteUserService ?? new DeleteUserServiceStub()
+                }
+              />
+            }
+          />
+        </Routes>
+      </GlobalContext.Provider>
+    </BrowserRouter>
   );
 };
 
@@ -47,14 +64,21 @@ describe("DeleteUserPage", () => {
   });
 
   test("Should call DeleteUserService on button click", async () => {
+    const userData = { ...makeUserEntity(), id: "logged_user_id" };
     const mockDeleteUserService = new DeleteUserServiceStub();
     const deleteUserServiceSpy = jest.spyOn(mockDeleteUserService, "execute");
-    makeSut({ deleteUserService: mockDeleteUserService });
+    makeSut({
+      deleteUserService: mockDeleteUserService,
+      getLoggedUser: () => userData,
+    });
 
     await DomTestHelpers.clickButton("deleteuser-button");
 
     await waitFor(() => {
       expect(deleteUserServiceSpy).toHaveBeenCalledTimes(1);
+      expect(deleteUserServiceSpy).toHaveBeenCalledWith({
+        userId: userData.id,
+      });
     });
   });
 
