@@ -1,3 +1,5 @@
+import { UserEntity } from "..";
+
 export namespace CreateUserUseCase {
   export interface Service {
     execute(
@@ -11,10 +13,5 @@ export namespace CreateUserUseCase {
     password: string;
   };
 
-  export type Output = {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-  };
+  export type Output = UserEntity;
 }

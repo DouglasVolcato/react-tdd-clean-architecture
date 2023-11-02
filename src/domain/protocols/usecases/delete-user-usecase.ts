@@ -1,3 +1,5 @@
+import { UserEntity } from "..";
+
 export namespace DeleteUserUseCase {
   export interface Service {
     execute(
@@ -9,10 +11,5 @@ export namespace DeleteUserUseCase {
     userId: string;
   };
 
-  export type Output = {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-  };
+  export type Output = UserEntity;
 }
